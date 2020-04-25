@@ -1,0 +1,39 @@
+1. Voeg een nieuw project toe
+	ASP.NET Web Application (.NET Framework)
+		name: TRMDataManager
+		Framework: .NET Framework 4.7.2
+	Kies in het volgende scherm
+		Web API
+		MVC - Web API
+		Authentication: Individual User Accounts
+	
+2. Update NuGet Packeten
+	Rechts klik References - Manage NuGet Packages...
+		Updates - Alles behalve "Boorstrap" op versie 3.3.7 houden
+		
+3. check settings
+	App_Start - RouteConfig.cs		
+		{controller}/{action}/{id}		==> MVC routing
+	App_Start - WebApiConfig.cs
+		api/{controller}/{id}			==> Web API routing
+	App_Start - IdentityConfig.cs			==> Settings voor Web API / ook voor de rechten (authentication)
+		manager.UserValidator		==> Waar aan een user naam moet voldoen
+		manager.PasswordValidator	==> Waaraan het wachtwoord moet voldoen
+		
+4. Web API: Test 1
+	file PostMan
+	
+5. Web API: Test 2
+	VS project TRMDataManager - Controllers - ValuesController.cs		==> is een web api controller omdat er wordt geerft van ApiController
+																									Bij een MVC controller wordt er geerft van Controllers
+	Add:
+		using Microsoft.AspNet.Identity;
+		in de functie Get()
+			string userId = RequestContext.Principal.Identity.GetUserId();
+			return new string[] { "value1", "value2", userId };
+	
+	Als je nu in PostMan terug de GET: http://localhost:57306/api/values uitvoerd kan je het Id-nummer van de ingelogde persoon zien
+		Je kan deze ook terug vinden in vs - SQL Server Object Explorer 
+			SQL Server - (localdb)\MSSQLLocalDB - Databases - aspnet-TRMDataManager - Tables - AspNetUsers
+	
+6. Commit de changes to GitHub

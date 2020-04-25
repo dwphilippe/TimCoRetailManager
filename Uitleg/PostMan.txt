@@ -1,0 +1,39 @@
+1. www.getpostman.com		==> Een tool om API ontwikkeling te vergemakkelijken
+	Download en installeer de app
+
+2. Open PostMan
+
+3. Maak een nieuwe gebruiker
+	POST: http://localhost:57306/api/account/register		==> vind je door VS Web API Project te starten
+																					API
+																					Account - POST api/Account/Register
+																					Sample application/json: Email - Password - ConfirmPassword
+	Body - raw - JSON (application/json)		==> json: {}: voor objecten, []: voor array's
+		{
+			"Email": "philippe@countryit.be",
+			"Password": "Pwd12345.",
+			"ComfirmPassword": "Pwd12345."
+		}
+	Send
+		Status: 200 OK		==> http status-code: 200 Alles werkte
+				  401			==> http status code voor geen rechten	
+		
+4. Gebruik de gebruiker/ Get Token
+			Door in te loggen krijg je een token die standaard 2weken geld. De geldigheidsduur kan je veranderen
+	Open een nieuw tabblad
+	GET: http://localhost:57306/token
+	Body - x-www-form-urlencoded		==> Komt achter de url te staan
+		KEY				VALUE
+		grant_type		password
+		username			philippe@countryit.be
+		password			Pwd12345.
+	Send
+	"access_token"		==> Is de token (kopieer hem)
+	
+5. Gebruik uw login
+	GET: http://localhost:57306/api/values
+	Headers
+		KEY					VALUE
+		Autheorization		Bearer <plak de token>
+	
+	

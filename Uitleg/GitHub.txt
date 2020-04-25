@@ -1,0 +1,51 @@
+Source control/Repository : https://www.youtube.com/watch?v=ugN-IYV1NTM&t=170s
+
+1. Installeer Github op uw PC
+	 http://www.git-scm.com
+	 Download en installeer het.
+	 
+2. Maak een nieuw project aan
+	 http://gethub.com/new 
+	 Set to Private
+	 Set README-file
+	 Add .getignore: VisualStudio		==> Ignore files dat vs create
+	 Add a license: GNU General Public Licence V3.0
+	 
+3. Clone to PC
+	 On site van het project click Clone or download
+	 Kopieer de link
+	 Open verkener op de plaats waar je uw code wilt hebben. Hij maakt automatich
+	   een map aan voor het project
+	 Rechts klik - Git Bash Here 		==> opend command-promp
+	 git clone "plak de gekopieerde link van GitHub'
+	 ---extra---
+	 cd "project name"
+	 git status
+	 get pull		==> sync
+	 clean
+	 
+4. Create VS Solution	 
+	 Maak een Blank Solution
+	 Name: Dezelfde naam als in GitHub
+	 Locatie: Zelfde locatie als in stap 3 (ook zonder de project naam/map
+	 Vink "Create directory for solution" aan		==> Hij gaat de map niet aanmaken
+	   omdat de map al gemaakt is door GitHub.
+		 
+5. Add files to sync  ==> git status: er is een bestand gewijzigd
+	 In VS open Team Explorer
+	 Project - Changes
+	 Right click on file - Stage
+	 Geeft een commit message
+	   Niet meer dan 80 letters per lijn
+		 Eerst lijn in het "onderwerp" (zoals bij mail)
+		 Lege lijn
+		 Body
+	 Commit Stage	==> git status: PC en server zijn niet up to date
+	 Sync the Commit	==> git status: Alles is up to date
+		 Incoming Commits:
+		   Fetch: Zeg wat er op de server anders is
+			 Pull: Breng de wijzigingen van de server naar de PC
+		 Outgoing Commits
+			 Push: Breng uw wijzigingen naar de server
+		 Sync: Doet een "Pull" en dan een "Push"	 
+		 
