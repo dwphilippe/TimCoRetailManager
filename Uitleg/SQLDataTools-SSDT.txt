@@ -1,0 +1,23 @@
+1. Voeg een project toe aan de solution
+		Type: SQL Server Database Project
+		Name: TRMData
+		
+2. Setup
+	Add Folter "dbo" to sql Project
+	Add Folder "tables" to dbo
+	Add Folder "Views" to dbo
+	Add Folder "Stored Procedures" to dbo
+	Add Folter "PublishLocations" to sql Project
+	
+3. Publish DB
+	Rechts klik project - Publish ...
+		Target database connection
+			Edit - Browse - Local - MSSQLLocalDB - OK
+		Database name: TRMData
+		Save Profile As ...
+			in map: PublishLocations 
+			Name: keep default
+		Publish
+		
+4. Check of de db is gemaakt
+	Controlleer dit in SQL Server Object Explorer
