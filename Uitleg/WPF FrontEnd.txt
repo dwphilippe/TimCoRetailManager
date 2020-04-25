@@ -1,0 +1,45 @@
+MVVM framework / caliburn.micro
+
+1. Add project to solution
+	type: WPF App (.NET Framework) Visual C#
+	Name: TRMDesktopUI
+	
+2. Setup
+	Properties
+		Assembly name: TimCoRetailManager
+	Set as startup project
+	
+3. Setup MVVM
+	Rechts klik References - Manage NuGet Packages ...
+		Browse caliburn.micro (V3.2.0) [zonder iets bij]- installeer
+	Add Folders
+		Views				==> User interface layer - Wat de user ziet
+		ViewModels		==> User interface layer - Doorgeefluik tussen de models en de views
+		Models			==> User interface layer - Data voor de views
+	Add a public class ShellViewModel
+	Add a Windows (WPF) to de views named ShellView
+	Add public class Bootstrapper to Project dat erft van BootstrapperBase
+		Create a constructor (ctor)
+			public Bootstrapper()
+			{
+				Initialize();
+			}
+		Override OnStratUp		==> Bij startup start de ShellViewModel
+			protected override void OnStartup(object sender, StartupEventArgs e)
+			{
+				DisplayRootViewFor<ShellViewModel>();
+			}
+	Remove StartupUrl from App.xaml
+	Add a dictionary resource to App.xaml		==> Laad de bootstrapper class
+		<Application.Resources>
+			<ResourceDictionary>
+				<ResourceDictionary.MergedResourceDictionaries>
+					<ResourceDictionary>
+						<local:Bootstrapper x:Key="Bootstrapper" />
+					</ResourceDictionary>
+				</ResourceDictionary.MergedResourceDictionaries>
+			</ResourceDictionary>
+		</Application.Resources>
+	Remove MainWindows.xaml
+	
+4. Start project en je moet ShellView zien	
