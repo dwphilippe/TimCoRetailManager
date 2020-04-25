@@ -34,6 +34,6 @@
 	
 	Als je nu in PostMan terug de GET: http://localhost:57306/api/values uitvoerd kan je het Id-nummer van de ingelogde persoon zien
 		Je kan deze ook terug vinden in vs - SQL Server Object Explorer 
-			SQL Server - (localdb)\MSSQLLocalDB - Databases - aspnet-TRMDataManager - Tables - AspNetUsers
+			SQL Server - Data Connection - DefaultConnection (TRMDataManager) - Tables - AspNetUsers
 	
 6. Commit de changes to GitHub

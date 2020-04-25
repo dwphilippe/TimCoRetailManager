@@ -1,0 +1,120 @@
+Swagger is een API-documentatie tool en API-demonstration tool
+
+0. Swagger ontoehankelijk maken
+	App_start - SwaggerConfig.cs
+	Maak commentaar van [assembly: PreapplicationStartMethod(typeof(SwaggerConfig), "Register")]
+		Als je nu url + /swagger doet krijgt pagina niet gevonden.
+	
+1. Toevoegen aan project
+	Klik rechts op de references van uw webapi-project - Manager NuGet Packages ...
+	Browse naar swashbuckle	(v5.6.0)	==> implement swagger in webapi
+	Updates ==> Alles behalve bootstrap
+	Test of het project nog start		==> Als het niet zou werken brengt dit onnodige debugging met zich mee
+
+2. Test swagger
+	Start het project en voeg na de url /swagger
+	
+3. Config swagger
+	App_Start - SwaggerConfig.cs
+		Verander de Naam
+			c.SingleApiVersion("v1", "TimCo Retail Manager API");
+		Als je het wilt mooi kunnen afdrukken uncomment
+			c.PrettyPrint();
+		Converteer enums naar strings 		==> ipv 1 2 3 wordt het auto brommer fiets
+			c.DescribeAllEnumsAsStrings();
+		Browser tab label/naam
+			c.DocumentTitle("TimCo API");			==> kort en goede omschrijving
+			
+4. Add Get Token to swagger
+	Add Class AuthTokenOperation
+		rechts klik op App_Start - Add - Class
+		De class moet erfen van IDocumentFilter
+			public class AuthTokenOperation : IDocumentFilter
+			Add using Swashbuckle.Swagger;
+			Implement the interface IDocumentFilter		==> Apply
+		Voeg de documentatie toe aan swagger
+			public void Apply(SwaggerDocument swaggerDoc, SchemaRegistry schemaRegistry, IApiExplorer apiExplorer)
+			{
+				SwaggerDoc.Paths.Add("/token", new PathItem
+				{
+					post = new Operation
+									{
+										tags = new List<string> {"Auth"},
+										consumes = new List<string> { "application/X-www_form-urlencoded" };
+										parameters = new List<Parameter>
+																{
+																new Parameter 
+																		{
+																			type = "string",
+																			name = "grant_type",
+																			required = true,
+																			@in = "formData",
+																			@default = "password"
+																		},
+																new Parameter 
+																		{
+																			type = "string",
+																			name = "username",
+																			required = false,
+																			@in = "formData"
+																		},
+																new Parameter 
+																		{
+																			type = "string",
+																			name = "password",
+																			required = false,
+																			@in = "formData"
+																		}
+																}
+									}
+				});
+			}
+		
+5. Voeg de documentfilter toe aan de swaggerconfig
+	App_Start - SwaggerConfig
+	Voeg boven c.SingleApiVersion dit toe	
+		c.DocumentFilter<AuthTokenOperation>();
+	Add using statment
+		using TRMDataManager.App_Start;
+
+6. Kijk of het in de documentatie voorkomt en werkt
+	start project
+	add swagger to url
+		onder auth moet je nu de token gedocumenteerd zien
+
+7. Maak values uitvoerbaar door token te gebruiken			==> Add a parameter to all the operations
+	Add Class AuthorizationOperationFilter
+		rechts klik op App_Start - Add - Class
+		De class moet erfen van IOperationFilter
+			public class AuthorizationOperationFilter : IOperationFilter
+			Add using Swashbuckle.Swagger;
+			Implement the interface IOperationFilter		==> Apply
+		Voeg de documentatie toe aan swagger
+				public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
+				{
+					if (operation.parameters == null)
+					{
+						operation.parameters = new List<Parameter>();
+					}
+					operation.parameters.Add(new Parameter
+															{
+															 name = "Authorization",
+															 @in = "header",
+															 description = "access token",
+															 required = false,
+															 type = "string"
+															});
+				}
+
+		
+8. Voeg de operationfilter toe aan de swaggerconfig
+	App_Start - SwaggerConfig
+	Voeg boven c.SingleApiVersion dit toe	
+		c.OperationFilter<AuthorizationOperationFilter>();
+
+9. Kijk of het in de documentatie voorkomt en werkt
+	start project
+	add swagger to url
+		bij Values moet nu de parameter Authorization bij staan
+		
+10. Sync met GitHub

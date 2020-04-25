@@ -1,0 +1,5 @@
+Status		Uitleg
+ 200 			 Alles werkte
+ 204			 Alles werkte maar er is geen return waarde
+ 401			 Niet de juiste rechten
+ 404			 Pagina niet gevonden

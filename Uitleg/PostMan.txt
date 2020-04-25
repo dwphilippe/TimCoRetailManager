@@ -16,7 +16,9 @@
 		}
 	Send
 		Status: 200 OK		==> http status-code: 200 Alles werkte
-				  401			==> http status code voor geen rechten	
+				  204			==> http status-code voor alles werkte maar er is geen return waarde
+				  401			==> http status code voor geen rechten
+				  404			==> http status code voor page not found	
 		
 4. Gebruik de gebruiker/ Get Token
 			Door in te loggen krijg je een token die standaard 2weken geld. De geldigheidsduur kan je veranderen
