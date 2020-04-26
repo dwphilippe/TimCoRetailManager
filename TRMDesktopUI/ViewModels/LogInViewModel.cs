@@ -19,7 +19,7 @@ namespace TRMDesktopUI.ViewModels
 			{
 				_userName = value;
 				NotifyOfPropertyChange(() => UserName);
-				CanLogIn();
+				NotifyOfPropertyChange(() => CanLogIn);
 			}
 		}
 
@@ -30,19 +30,22 @@ namespace TRMDesktopUI.ViewModels
 			{
 				_password = value;
 				NotifyOfPropertyChange(() => Password);
-				CanLogIn();
+				NotifyOfPropertyChange(() => CanLogIn);
 			}
 		}
 
-		public bool CanLogIn()
+		public bool CanLogIn
 		{
-			bool output = false;
-
-			if (UserName?.Length > 0 && Password?.Length > 0)
+			get
 			{
-				output = true;
+				bool output = false;
+
+				if (UserName?.Length > 0 && Password?.Length > 0)
+				{
+					output = true;
+				}
+				return output;
 			}
-			return output;
 		}
 
 		public void LogIn()

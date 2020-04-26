@@ -53,6 +53,5 @@
                 Padding="20 0 20 5" Margin="10">
             Log In
         </Button>
-
     </Grid>
 </UserControl>
