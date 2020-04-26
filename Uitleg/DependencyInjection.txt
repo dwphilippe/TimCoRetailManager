@@ -1,0 +1,72 @@
+Tools: 
+	Autofac
+	Caliburn.micro: Simplecontainer / mef
+	
+1. Setup SimpleContainer
+	Add private property contrainer to Bootstrapper class
+		Private SimpleContainer _container = new SimpleContainer();
+	Override 3 Mothodes/functions
+        protected override object GetInstance(Type service, string key)
+        {
+            return _container.GetInstance(service, key);
+        }
+        protected override IEnumerable<object> GetAllInstances(Type service)
+        {
+            return _container.GetAllInstances(service);
+        }
+        protected override void BuildUp(object instance)
+        {
+            _container.BuildUp(instance);
+        }
+	Override the most important methode and put it onther de contructor
+		protected override void Configure()
+		{
+			_container.Instance(_container);
+			
+			_container
+				.Singleton<IWindowManager, WindowManager>()
+				.Singleton<IEventAggregator, EventAggregator>();
+			
+			GetType().Assembly.GetTypes()
+				.Where(type => type.IsClass)
+				.Where(type => type.Name.EndsWith("ViewModel"))
+				.ToList()
+				.ForEach(viewModelType => _container.RegisterPerRequest(
+					viewModelType, viewModelType.ToString(), viewModelType));
+		}
+		
+2. Test of het project nog start en zet alles klaar voor GitHub (commit not push)
+
+3. Probeer iets maar je wilt de code niet houden enkel om te kijken of alles ok is
+					==> Zeker kijken of alle wijzigingen in GitHub staan
+	Add public class Calculations
+		public class Calculations
+		{
+			public List<string> Register {get; set; } = new List<string>();
+			
+			public double Add(double x, double y)
+			{
+				return x + y;
+			}
+		}
+	Maak interface van class
+		ga op class naam staan - ctrl+; - Extract Interface ...
+		OK
+	Voeg to aan container
+		In Bootstrapper configure add onder de singletons
+			_container
+				.PerRequest<ICalculations, Calculations>();
+	Maak constructor in ShellViewModel dat een ICalculations ontvangt
+		private ICalculations _calculations;
+		
+		public ShellViewModel(ICalculations calculations)
+		{
+			_calculations = calculations;
+		}
+	Test door braekpoint op ShellViewModel contructor
+	Verwijder de test code via GitHub		==> ook model via Branch - 
+																Doe al de wijzigingen in een nieuwe branch en verwidjer hem daarna of laat hem staan
+		Change - select all file - right clik - Undo change
+		Yes
+		Select [Add]-files - right click - Delete
+		Yes
