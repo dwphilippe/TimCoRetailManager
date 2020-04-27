@@ -18,6 +18,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
@@ -29,28 +30,36 @@
             Login Form
         </TextBlock>
         
+        <!-- Error Message -->
+        <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
+                   x:Name="ErrorMessage"
+                   Text="test"
+                   Foreground="Red" FontSize="28"
+                   TextWrapping="Wrap" Margin="0 0 0 20"
+                   MaxWidth="400"
+                   Visibility="{Binding IsErrorVisable, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+
         <!-- Username -->
-        <TextBlock Grid.Column="1" Grid.Row="1">
+        <TextBlock Grid.Column="1" Grid.Row="2">
             User name
         </TextBlock>
-        <TextBox Grid.Column="2" Grid.Row="1" 
+        <TextBox Grid.Column="2" Grid.Row="2" 
                  x:Name="UserName"
-                 MinWidth="200"
-                 Margin="10 0 0 5"
-                 Text="philippe@countryit.be"/>
+                 MinWidth="300"
+                 Margin="10 0 0 5"/>
 
         <!-- Password -->
-        <TextBlock Grid.Column="1" Grid.Row="2">
+        <TextBlock Grid.Column="1" Grid.Row="3">
             Password
         </TextBlock>
-        <PasswordBox Grid.Column="2" Grid.Row="2" 
+        <PasswordBox Grid.Column="2" Grid.Row="3" 
                  x:Name="Password"
-                 MinWidth="200"
+                 MinWidth="300"
                  Margin="10 0 0 5"/>
 
 
         <!-- Login button -->
-        <Button Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
+        <Button Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
                 x:Name="LogIn"
                 Padding="20 0 20 5" Margin="10">
             Log In
