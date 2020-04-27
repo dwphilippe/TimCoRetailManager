@@ -13,7 +13,12 @@ namespace TRMDesktopUI.ViewModels
     {
 		private string _userName;
 		private string _password;
-		private APIHelper _ApiHelper = new APIHelper();
+		private IAPIHelper _apiHelper;
+
+		public LogInViewModel(IAPIHelper apiHelper)
+		{
+			_apiHelper = apiHelper;
+		}
 
 		public string UserName
 		{
@@ -58,8 +63,6 @@ namespace TRMDesktopUI.ViewModels
 			}
 		}
 
-
-
 		public bool CanLogIn
 		{
 			get
@@ -79,7 +82,8 @@ namespace TRMDesktopUI.ViewModels
 			ErrorMessage = "";
 			try
 			{
-				AuthenticatedUser result = await _ApiHelper.Authenticate(UserName, Password);
+				AuthenticatedUser result = await _apiHelper.Authenticate(UserName, Password);
+				await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 			}
 			catch (Exception ex)
 			{

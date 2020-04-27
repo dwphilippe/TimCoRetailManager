@@ -14,7 +14,7 @@ namespace TRMDataManager.Controllers
     public class UserController : ApiController
     {
         // GET api/User
-        public UserModel GetUserLogedIn()
+        public UserModel GetLoggedInUserInfo()
         {
             string userId = RequestContext.Principal.Identity.GetUserId();
 

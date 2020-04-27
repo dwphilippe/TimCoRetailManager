@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TRMDesktopUI.Models
 {
-    public class AuthenticatedUser : IAuthenticatedUser
+    public class AuthenticatedUser
     {
         public string Access_Token { get; set; }
         public string UserName { get; set; }
