@@ -36,7 +36,8 @@
         <TextBox Grid.Column="2" Grid.Row="1" 
                  x:Name="UserName"
                  MinWidth="200"
-                 Margin="10 0 0 5"/>
+                 Margin="10 0 0 5"
+                 Text="philippe@countryit.be"/>
 
         <!-- Password -->
         <TextBlock Grid.Column="1" Grid.Row="2">
@@ -46,7 +47,8 @@
                  x:Name="Password"
                  MinWidth="200"
                  Margin="10 0 0 5"/>
-        
+
+
         <!-- Login button -->
         <Button Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
                 x:Name="LogIn"
