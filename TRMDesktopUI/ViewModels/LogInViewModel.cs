@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TRMDesktopUI.EventModels;
 using TRMDesktopUI.Helper;
 using TRMDesktopUI.Models;
 
@@ -14,10 +15,12 @@ namespace TRMDesktopUI.ViewModels
 		private string _userName;
 		private string _password;
 		private IAPIHelper _apiHelper;
+		private IEventAggregator _events;
 
-		public LogInViewModel(IAPIHelper apiHelper)
+		public LogInViewModel(IAPIHelper apiHelper, IEventAggregator events)
 		{
 			_apiHelper = apiHelper;
+			_events = events;
 		}
 
 		public string UserName
@@ -84,6 +87,8 @@ namespace TRMDesktopUI.ViewModels
 			{
 				AuthenticatedUser result = await _apiHelper.Authenticate(UserName, Password);
 				await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+
+				_events.PublishOnUIThread(new LogOnEvent());
 			}
 			catch (Exception ex)
 			{
