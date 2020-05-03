@@ -14,8 +14,9 @@ namespace TRMDesktopUI.ViewModels
     {
 		private IProductEndPoint _productEndPoint;
 		private BindingList<ProductModel> _products;
-		private BindingList<ProductModel> _cart;
-		private int _itemQuantity;
+		private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
+		private ProductModel _selectedProduct;
+		private int _itemQuantity = 1;
 
 		public SalesViewModel(IProductEndPoint productEndPoint)
 		{
@@ -44,13 +45,25 @@ namespace TRMDesktopUI.ViewModels
 			}
 		}
 
-		public BindingList<ProductModel> Cart
+		public ProductModel SelectedProduct
+		{
+			get { return _selectedProduct; }
+			set 
+			{ 
+				_selectedProduct = value;
+				NotifyOfPropertyChange(() => SelectedProduct);
+				NotifyOfPropertyChange(() => CanAddToCart);
+			}
+		}
+
+
+		public BindingList<CartItemModel> Cart
 		{
 			get { return _cart; }
 			set
 			{
 				_cart = value;
-				NotifyOfPropertyChange(() => Products);
+				NotifyOfPropertyChange(() => Cart);
 			}
 		}
 
@@ -60,7 +73,8 @@ namespace TRMDesktopUI.ViewModels
 			set 
 			{
 				_itemQuantity = value;
-				NotifyOfPropertyChange(() => Products);
+				NotifyOfPropertyChange(() => ItemQuantity);
+				NotifyOfPropertyChange(() => CanAddToCart);
 			}
 		}
 
@@ -68,8 +82,13 @@ namespace TRMDesktopUI.ViewModels
 		{
 			get
 			{
-				//todo: Implement SubTotal
-				return "$0.00";
+				decimal subTotal = 0;
+
+				foreach (CartItemModel oneCartItem in Cart)
+				{
+					subTotal += (oneCartItem.Product.RetailPrice * oneCartItem.ProductQuantity);
+				}
+				return subTotal.ToString("C"); ;
 			}
 		}
 
@@ -91,19 +110,45 @@ namespace TRMDesktopUI.ViewModels
 			}
 		}
 
-		public bool CanAddToCart()
+		public bool CanAddToCart
 		{
-			bool output= true;
-
-			//todo: Controlleer of er iets is geselecteerd en een hoeveelheid is ingegeven
-
-			return output;
+			get 
+			{
+				//todo wordt niet aangepast als een nummer en daarna iets ongeldig wordt ingegeven (geen nummer)
+				return (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity);
+			}
+			
 		}
 
 		public void AddToCart()
 		{
-			//todo: Implementeer de knop AddToCart
-			throw new NotImplementedException();
+			CartItemModel existInCart = new CartItemModel();
+			existInCart = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+
+			if (existInCart != null)
+			{
+				existInCart.ProductQuantity += ItemQuantity;
+				//todo: Refactory: Hack Er moet een betere manier hiervoor zijn
+				Cart.Remove(existInCart);
+				Cart.Add(existInCart);
+			}
+			else
+			{
+				CartItemModel newItemToCart = new CartItemModel { Product = SelectedProduct, ProductQuantity = ItemQuantity };
+				Cart.Add(newItemToCart);
+			}
+			SelectedProduct.QuantityInStock -= ItemQuantity;
+
+			//todo: Refactory: Hack Er moet een betere manier hiervoor zijn
+			ProductModel dummyDisplay = SelectedProduct;
+			Products.Remove(dummyDisplay);
+			Products.Add(dummyDisplay);
+
+			NotifyOfPropertyChange(() => Cart);
+			NotifyOfPropertyChange(() => Products);
+			NotifyOfPropertyChange(() => SubTotal);
+
+			ItemQuantity = 1;
 		}
 
 		public bool CanRemoveFromCart()

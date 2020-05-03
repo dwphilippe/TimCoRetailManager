@@ -34,10 +34,28 @@
                     Orientation="Vertical">
             <TextBlock>Items</TextBlock>
             <ListBox x:Name="Products"
+                     SelectedItem="SelectedProduct"
                      MinHeight="200" MinWidth="150">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding ProductName}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                       Text="{Binding ProductName}" />
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                       Text="{Binding RetailPrice}" 
+                                       MinWidth="100" TextAlignment="Left" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" 
+                                       Text="{Binding QuantityInStock}" 
+                                       MinWidth="40" TextAlignment="Right" />
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -68,7 +86,13 @@
                     Orientation="Vertical">
             <TextBlock>Cart</TextBlock>
             <ListBox x:Name="Cart"
-                     MinHeight="200" MinWidth="150" />
+                     MinHeight="200" MinWidth="150">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
         
         <!-- Row 2 -->
