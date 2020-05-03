@@ -14,7 +14,7 @@ namespace TRMDesktopUI.Helper
 {
     public class APIHelper : IAPIHelper
     {
-        private HttpClient ApiClient;
+        private HttpClient _apiClient;
         private ILoggedInUserModel _loggedInUser;
 
         public APIHelper(ILoggedInUserModel loggedInUser)
@@ -23,12 +23,20 @@ namespace TRMDesktopUI.Helper
             _loggedInUser = loggedInUser;
         }
 
+        public HttpClient ApiClient 
+        { 
+            get
+            {
+                return _apiClient;
+            }
+        }
+
         private void InitializeClient()
         {
-            ApiClient = new HttpClient();
-            ApiClient.BaseAddress = new Uri(ConfigurationManager.AppSettings["api_url"]);
-            ApiClient.DefaultRequestHeaders.Accept.Clear();
-            ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _apiClient = new HttpClient();
+            _apiClient.BaseAddress = new Uri(ConfigurationManager.AppSettings["api_url"]);
+            _apiClient.DefaultRequestHeaders.Accept.Clear();
+            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<AuthenticatedUser> Authenticate(string userName, string password)
@@ -57,10 +65,7 @@ namespace TRMDesktopUI.Helper
 
         public async Task GetLoggedInUserInfo(string token)
         {
-            ApiClient.DefaultRequestHeaders.Clear();
-            ApiClient.DefaultRequestHeaders.Accept.Clear();
-            ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            ApiClient.DefaultRequestHeaders.Add("Authorization", $"bearer { token }");
+            InitializeApiDefaultHeaders(token);
 
             using (HttpResponseMessage response = await ApiClient.GetAsync("/api/User"))
             {
@@ -79,6 +84,14 @@ namespace TRMDesktopUI.Helper
                     throw new Exception(response.ReasonPhrase);
                 }
             }
+        }
+
+        private void InitializeApiDefaultHeaders(string token)
+        {
+            ApiClient.DefaultRequestHeaders.Clear();
+            ApiClient.DefaultRequestHeaders.Accept.Clear();
+            ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            ApiClient.DefaultRequestHeaders.Add("Authorization", $"bearer { token }");
         }
     }
 }

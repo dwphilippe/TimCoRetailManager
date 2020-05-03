@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TRMDesktopUI.Helper;
+using TRMDesktopUI.Library.API;
 using TRMDesktopUI.Library.Models;
 using TRMDesktopUI.Models;
 using TRMDesktopUI.ViewModels;
@@ -30,6 +31,9 @@ namespace TRMDesktopUI
         protected override void Configure()
         {
             _container.Instance(_container);
+
+            _container
+                .PerRequest<IProductEndPoint, ProductEndPoint>();
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
