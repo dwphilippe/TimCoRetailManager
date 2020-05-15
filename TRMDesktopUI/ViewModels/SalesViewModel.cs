@@ -82,31 +82,47 @@ namespace TRMDesktopUI.ViewModels
 		{
 			get
 			{
-				decimal subTotal = 0;
-
-				foreach (CartItemModel oneCartItem in Cart)
-				{
-					subTotal += (oneCartItem.Product.RetailPrice * oneCartItem.ProductQuantity);
-				}
-				return subTotal.ToString("C"); ;
+				return CalculateSubTotal().ToString("C"); ;
 			}
+		}
+
+		private decimal CalculateSubTotal()
+		{
+			decimal subTotal = 0;
+
+			foreach (CartItemModel oneCartItem in Cart)
+			{
+				subTotal += (oneCartItem.Product.RetailPrice * oneCartItem.ProductQuantity);
+			}
+
+			return subTotal;
 		}
 
 		public string Tax
 		{
 			get
 			{
-				//todo: Implement Tex
-				return "$0.00";
+				return CalculateTax().ToString("C"); ;
 			}
+		}
+
+		private decimal CalculateTax()
+		{
+			decimal tax = 0;
+
+			foreach (CartItemModel oneCartItem in Cart)
+			{
+				tax += (oneCartItem.Product.TaxPrice * oneCartItem.ProductQuantity);
+			}
+			return tax;
 		}
 
 		public string Total
 		{
 			get
 			{
-				//todo: Implement Total
-				return "$0.00";
+				decimal total = CalculateSubTotal() + CalculateTax();
+				return total.ToString("C");
 			}
 		}
 
@@ -147,6 +163,8 @@ namespace TRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => Cart);
 			NotifyOfPropertyChange(() => Products);
 			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
 
 			ItemQuantity = 1;
 		}
