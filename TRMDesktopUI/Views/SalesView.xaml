@@ -50,7 +50,7 @@
                             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                        Text="{Binding ProductName}" />
                             <TextBlock Grid.Row="1" Grid.Column="0" 
-                                       Text="{Binding RetailPrice}" 
+                                       Text="{Binding RetailPrice, StringFormat='{}{0:C}'}" 
                                        FontSize="12"
                                        MinWidth="100" TextAlignment="Left" />
                             <TextBlock Grid.Row="1" Grid.Column="1" 
