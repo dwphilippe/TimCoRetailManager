@@ -110,10 +110,13 @@ namespace TRMDesktopUI.ViewModels
 		{
 			decimal tax = 0;
 
-			foreach (CartItemModel oneCartItem in Cart)
-			{
-				tax += (oneCartItem.Product.TaxPrice * oneCartItem.ProductQuantity);
-			}
+			tax = Cart
+				.Where(x => x.Product.IsTaxAble)
+				.Sum(x => x.Product.TaxPrice * x.ProductQuantity);
+			//foreach (CartItemModel oneCartItem in Cart)
+			//{
+			//	tax += (oneCartItem.Product.TaxPrice * oneCartItem.ProductQuantity);
+			//}
 			return tax;
 		}
 
